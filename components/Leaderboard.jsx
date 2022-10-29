@@ -19,7 +19,7 @@ const Leaderboard = () => {
     <div>
       {players.map((player) => {
         return (
-          <div>
+          <div key={player.id}>
             <Link to={`/leaderboard/${player.id}`} key={player.id}>
               {player.username}
             </Link>
