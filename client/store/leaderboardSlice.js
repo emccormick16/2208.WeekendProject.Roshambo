@@ -16,8 +16,12 @@ export const leaderboardSlice = createSlice({
     setSelectedPlayer: (state, action) => {
       state.selectedPlayer = action.payload;
     },
+    createPlayer: (state, action) => {
+      state.allPlayers.push(action.payload);
+    },
   },
 });
 
-export const { setAllPlayers, setSelectedPlayer } = leaderboardSlice.actions;
+export const { setAllPlayers, setSelectedPlayer, createPlayer } =
+  leaderboardSlice.actions;
 export default leaderboardSlice.reducer;

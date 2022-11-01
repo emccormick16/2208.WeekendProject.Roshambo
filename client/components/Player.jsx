@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { setSelectedPlayer } from "../store/leaderboardSlice";
 
 const Player = () => {
+  const dispatch = useDispatch();
   const { playerId } = useParams();
 
-  const [player, setPlayer] = useState({});
+  const selectedPlayer = useSelector(
+    (state) => state.leaderboard.selectedPlayer
+  );
+
   const [doneLoading, setDoneLoading] = useState(false); // True if no longer loading
 
   const handleSetPlayer = async () => {
-    const getData = await fetch(`/api/players/${playerId}`);
-    const json = await getData.json();
-    setPlayer(json);
+    const { data: player } = await axios(`/api/players/${playerId}`);
+    dispatch(setSelectedPlayer(player));
     setDoneLoading(true);
   };
 
@@ -21,11 +27,11 @@ const Player = () => {
   if (!doneLoading) return <div>Loading...</div>;
   else
     return (
-      <div key={player.id}>
-        <div>Player ID: {player.id}</div>
-        <div>Player: {player.username}</div>
+      <div key={selectedPlayer.id}>
+        <div>Player ID: {selectedPlayer.id}</div>
+        <div>Player: {selectedPlayer.username}</div>
         <div>
-          {player.games.map((game) => {
+          {selectedPlayer.games.map((game) => {
             return (
               <div key={game.id}>
                 The result of Game {game.id} was {game.result}
